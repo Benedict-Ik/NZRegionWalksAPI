@@ -40,5 +40,18 @@ namespace NZRegionWalksAPI.Controllers
             var regions = _dbContext.Regions.ToList();
             return Ok(regions);
         }
+        // GET: {baseUrl}/api/regions/{id}
+        [HttpGet("{id}")]
+        //[Route("{id: Guid}")]
+        //public IActionResult GetRegionById([FromRoute]Guid id)
+        public IActionResult GetRegionById(Guid id)
+        {
+            var region = _dbContext.Regions.FirstOrDefault(r => r.Id == id);
+            if (region == null)
+            {
+                return NotFound();
+            }
+            return Ok(region);
+        }
     }
 }
