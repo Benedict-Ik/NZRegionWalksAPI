@@ -96,7 +96,7 @@ namespace NZRegionWalksAPI.Controllers
                 Name = region.Name,
                 RegionImageUrl = region.RegionImageUrl
             };
-            return CreatedAtAction(nameof(GetRegionById), new { id = region.Id }, regionDTO);
+            return CreatedAtAction(nameof(GetRegionById), new { id = regionDTO.Id }, regionDTO);
         }
     }
 }
