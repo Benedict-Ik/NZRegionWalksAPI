@@ -98,5 +98,8 @@ namespace NZRegionWalksAPI.Controllers
             };
             return CreatedAtAction(nameof(GetRegionById), new { id = region.Id }, regionDTO);
         }
+
+        [HttpPut]
+        public
     }
 }
