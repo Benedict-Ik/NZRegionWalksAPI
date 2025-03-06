@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NZRegionWalksAPI.Data;
+using NZRegionWalksAPI.Models.DTOs;
 
 namespace NZRegionWalksAPI.Controllers
 {
@@ -14,44 +15,59 @@ namespace NZRegionWalksAPI.Controllers
         {
             this._dbContext = dbContext;
         }
+
+        /* GET ALL REGIONS */
         // GET: {baseUrl}/api/regions
         [HttpGet]
         public IActionResult GetAllRegions()
         {
-            /*Hardcoded*/
-            /*var regions = new List<Region>
-            {
-                new Region
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Auckland",
-                    Code = "AKL",
-                    RegionImageUrl = "https://www.doc.govt.nz/globalassets/images/conservation/parks-and-recreation/places-to-visit/auckland/auckland-region.jpg"
-                },
-                new Region
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Wellington",
-                    Code = "WLG",
-                    RegionImageUrl = "https://www.doc.govt.nz/globalassets/images/conservation/parks-and-recreation/places-to-visit/wellington/wellington-region.jpg"
-                }
-            };*/
-
+            // Get Data from Database - Domain Model 
             var regions = _dbContext.Regions.ToList();
-            return Ok(regions);
+
+            // Map Domain Model to DTO
+            var regionsDTO = new List<RegionDTO>();
+
+            // Loop through the domain model and converting each individual property to a DTO. We looped through because of the list of regions
+            foreach (var region in regions)
+            {
+                regionsDTO.Add(new RegionDTO()
+                {
+                    Id = region.Id,
+                    Code = region.Code,
+                    Name = region.Name,
+                    RegionImageUrl = region.RegionImageUrl,
+                });
+            }
+
+            // Return DTO to Client
+            return Ok(regionsDTO);
         }
+
+        /* GET SINGLE REGION BY ID */
         // GET: {baseUrl}/api/regions/{id}
         [HttpGet("{id}")]
-        //[Route("{id: Guid}")]
-        //public IActionResult GetRegionById([FromRoute]Guid id)
         public IActionResult GetRegionById(Guid id)
         {
-            var region = _dbContext.Regions.FirstOrDefault(r => r.Id == id);
-            if (region == null)
+
+            // Get Data from Database - Domain Model
+            var regions = _dbContext.Regions.FirstOrDefault(r => r.Id == id);
+
+            if (regions == null)
             {
                 return NotFound();
             }
-            return Ok(region);
+
+            // Map Domain Model to DTO
+            var regionsDTO = new RegionDTO()
+            {
+                Id = regions.Id,
+                Code = regions.Code,
+                Name = regions.Name,
+                RegionImageUrl = regions.RegionImageUrl,
+            };
+
+            // Return DTO to Client
+            return Ok(regionsDTO);
         }
     }
 }

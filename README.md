@@ -1,1 +1,1 @@
-This is the Readme file
+This file demonstrates manual mapping with DTOs
