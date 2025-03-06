@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NZRegionWalksAPI.Data;
+using NZRegionWalksAPI.Models.Domain;
 using NZRegionWalksAPI.Models.DTOs;
 
 namespace NZRegionWalksAPI.Controllers
@@ -68,6 +69,16 @@ namespace NZRegionWalksAPI.Controllers
 
             // Return DTO to Client
             return Ok(regionsDTO);
+        }
+
+        /* CREATE REGION */
+        // POST: {baseUrl}/api/regions
+        [HttpPost]
+        public IActionResult CreateRegion([FromBody] Region region)
+        {
+            _dbContext.Regions.Add(region);
+            _dbContext.SaveChanges();
+            return CreatedAtAction(nameof(GetRegionById), new { id = region.Id }, region);
         }
     }
 }
