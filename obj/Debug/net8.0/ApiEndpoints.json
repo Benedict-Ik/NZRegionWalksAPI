@@ -18,8 +18,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "region",
-        "Type": "NZRegionWalksAPI.Models.Domain.Region",
+        "Name": "createRegionDTO",
+        "Type": "NZRegionWalksAPI.Models.DTOs.CreateRegionDTO",
         "IsRequired": true
       }
     ],

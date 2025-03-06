@@ -24,17 +24,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Region"
+                "$ref": "#/components/schemas/CreateRegionDTO"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Region"
+                "$ref": "#/components/schemas/CreateRegionDTO"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Region"
+                "$ref": "#/components/schemas/CreateRegionDTO"
               }
             }
           }
@@ -123,13 +123,9 @@
   },
   "components": {
     "schemas": {
-      "Region": {
+      "CreateRegionDTO": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
           "code": {
             "type": "string",
             "nullable": true

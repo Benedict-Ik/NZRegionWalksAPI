@@ -74,11 +74,29 @@ namespace NZRegionWalksAPI.Controllers
         /* CREATE REGION */
         // POST: {baseUrl}/api/regions
         [HttpPost]
-        public IActionResult CreateRegion([FromBody] Region region)
+        public IActionResult CreateRegion([FromBody] CreateRegionDTO createRegionDTO)
         {
+            // Map or convert DTO to Domain Model
+            var region = new Region
+            {
+                Code = createRegionDTO.Code,
+                Name = createRegionDTO.Name,
+                RegionImageUrl = createRegionDTO.RegionImageUrl
+            };
+
+            // Use Domain Model to save to Database
             _dbContext.Regions.Add(region);
             _dbContext.SaveChanges();
-            return CreatedAtAction(nameof(GetRegionById), new { id = region.Id }, region);
+
+            // Map Domain Model back to DTO
+            var regionDTO = new RegionDTO()
+            {
+                Id = region.Id,
+                Code = region.Code,
+                Name = region.Name,
+                RegionImageUrl = region.RegionImageUrl
+            };
+            return CreatedAtAction(nameof(GetRegionById), new { id = region.Id }, regionDTO);
         }
     }
 }

@@ -1,1 +1,1 @@
-We implemented the CreateRegion() method in this branch
+We implemented the CreateRegion() method in this branch by using the newly created CreateRegionDTO class.
