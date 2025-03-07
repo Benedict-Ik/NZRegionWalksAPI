@@ -100,7 +100,7 @@ namespace NZRegionWalksAPI.Controllers
         }
 
         // PUT: {baseUrl}/api/regions/{id}
-        [HttpPut]
+        [HttpPut("{id}")]
         public IActionResult UpdateRegion(Guid id, UpdateRegionDTO updateRegionDTO)
         {
             // Check if the data exists in DB
@@ -129,6 +129,22 @@ namespace NZRegionWalksAPI.Controllers
             };
 
             return Ok(regionDTO);
+        }
+
+        // DELETE: {baseUrl}/api/regions/{id}
+        [HttpDelete("{id}")]
+        public IActionResult DeleteRegion(Guid id)
+        {
+            // Check if the data exists in DB
+            var region = _dbContext.Regions.FirstOrDefault(r => r.Id == id);
+            if (region == null)
+            {
+                return NotFound();
+            }
+            _dbContext.Regions.Remove(region);
+            _dbContext.SaveChanges();
+            //return NoContent();
+            return Ok("Deleted successfully");
         }
     }
 }

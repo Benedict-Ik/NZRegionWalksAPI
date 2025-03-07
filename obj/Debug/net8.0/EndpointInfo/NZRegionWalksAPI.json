@@ -44,6 +44,29 @@
             "description": "OK"
           }
         }
+      }
+    },
+    "/api/Regions/{id}": {
+      "get": {
+        "tags": [
+          "Regions"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
       },
       "put": {
         "tags": [
@@ -52,7 +75,8 @@
         "parameters": [
           {
             "name": "id",
-            "in": "query",
+            "in": "path",
+            "required": true,
             "schema": {
               "type": "string",
               "format": "uuid"
@@ -83,10 +107,8 @@
             "description": "OK"
           }
         }
-      }
-    },
-    "/api/Regions/{id}": {
-      "get": {
+      },
+      "delete": {
         "tags": [
           "Regions"
         ],
