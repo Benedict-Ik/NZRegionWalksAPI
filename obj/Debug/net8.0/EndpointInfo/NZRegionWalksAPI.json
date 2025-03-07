@@ -49,21 +49,31 @@
         "tags": [
           "Regions"
         ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Region"
+                "$ref": "#/components/schemas/UpdateRegionDTO"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Region"
+                "$ref": "#/components/schemas/UpdateRegionDTO"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Region"
+                "$ref": "#/components/schemas/UpdateRegionDTO"
               }
             }
           }
@@ -170,13 +180,9 @@
         },
         "additionalProperties": false
       },
-      "Region": {
+      "UpdateRegionDTO": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
           "code": {
             "type": "string",
             "nullable": true

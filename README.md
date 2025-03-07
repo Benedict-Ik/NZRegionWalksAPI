@@ -1,1 +1,1 @@
-We implemented the UpdateRegion() method in this branch.
+We implemented the UpdateRegion() method in this branch using the UpdateRegionDTO class.

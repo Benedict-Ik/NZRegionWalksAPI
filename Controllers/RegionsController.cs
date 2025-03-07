@@ -101,21 +101,34 @@ namespace NZRegionWalksAPI.Controllers
 
         // PUT: {baseUrl}/api/regions/{id}
         [HttpPut]
-        public IActionResult UpdateRegion([FromBody] Region region)
+        public IActionResult UpdateRegion(Guid id, UpdateRegionDTO updateRegionDTO)
         {
-            // Get Data from Database - Domain Model
-            var updateRegion = _dbContext.Regions.FirstOrDefault(r => r.Id == region.Id);
-            if (updateRegion == null)
+            // Check if the data exists in DB
+            var region = _dbContext.Regions.FirstOrDefault(r => r.Id == id);
+
+            if (region == null)
             {
                 return NotFound();
             }
-            // Update Domain Model
-            updateRegion.Code = region.Code;
-            updateRegion.Name = region.Name;
-            updateRegion.RegionImageUrl = region.RegionImageUrl;
-            // Save Changes
+
+            // Mapping the DTO to the Domain Model
+            region.Code = updateRegionDTO.Code;
+            region.Name = updateRegionDTO.Name;
+            region.RegionImageUrl = updateRegionDTO.RegionImageUrl;
+
+            // Because _dbContext is already tracking the changes, we don't need to call the Update method
             _dbContext.SaveChanges();
-            return Ok(updateRegion);
+
+            // Mapping the Domain Model back to the DTO to return to the client
+            var regionDTO = new RegionDTO()
+            {
+                Id = region.Id,
+                Code = region.Code,
+                Name = region.Name,
+                RegionImageUrl = region.RegionImageUrl
+            };
+
+            return Ok(regionDTO);
         }
     }
 }

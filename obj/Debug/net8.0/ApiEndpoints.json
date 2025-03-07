@@ -34,8 +34,13 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "region",
-        "Type": "NZRegionWalksAPI.Models.Domain.Region",
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": false
+      },
+      {
+        "Name": "updateRegionDTO",
+        "Type": "NZRegionWalksAPI.Models.DTOs.UpdateRegionDTO",
         "IsRequired": true
       }
     ],
