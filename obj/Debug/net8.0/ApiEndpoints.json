@@ -27,6 +27,22 @@
   },
   {
     "ContainingType": "NZRegionWalksAPI.Controllers.RegionsController",
+    "Method": "UpdateRegion",
+    "RelativePath": "api/Regions",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "region",
+        "Type": "NZRegionWalksAPI.Models.Domain.Region",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "NZRegionWalksAPI.Controllers.RegionsController",
     "Method": "GetRegionById",
     "RelativePath": "api/Regions/{id}",
     "HttpMethod": "GET",

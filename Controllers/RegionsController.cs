@@ -99,7 +99,23 @@ namespace NZRegionWalksAPI.Controllers
             return CreatedAtAction(nameof(GetRegionById), new { id = region.Id }, regionDTO);
         }
 
+        // PUT: {baseUrl}/api/regions/{id}
         [HttpPut]
-        public
+        public IActionResult UpdateRegion([FromBody] Region region)
+        {
+            // Get Data from Database - Domain Model
+            var updateRegion = _dbContext.Regions.FirstOrDefault(r => r.Id == region.Id);
+            if (updateRegion == null)
+            {
+                return NotFound();
+            }
+            // Update Domain Model
+            updateRegion.Code = region.Code;
+            updateRegion.Name = region.Name;
+            updateRegion.RegionImageUrl = region.RegionImageUrl;
+            // Save Changes
+            _dbContext.SaveChanges();
+            return Ok(updateRegion);
+        }
     }
 }
