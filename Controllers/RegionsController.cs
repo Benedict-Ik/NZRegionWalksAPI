@@ -100,22 +100,35 @@ namespace NZRegionWalksAPI.Controllers
         }
 
         // PUT: {baseUrl}/api/regions/{id}
-        [HttpPut]
-        public IActionResult UpdateRegion([FromBody] Region region)
+        [HttpPut("{id}")]
+        //[HttpPut]
+        public IActionResult UpdateRegion([FromRoute] Guid id, [FromBody, Bind("Code, Name, RegionImageUrl")] Region region)
         {
-            // Get Data from Database - Domain Model
-            var updateRegion = _dbContext.Regions.FirstOrDefault(r => r.Id == region.Id);
+            // Check if data exists in DB
+            var updateRegion = _dbContext.Regions.FirstOrDefault(r => r.Id == id);
+
             if (updateRegion == null)
             {
                 return NotFound();
             }
-            // Update Domain Model
+            // Update the properties of the existing data with values from the updated data
             updateRegion.Code = region.Code;
             updateRegion.Name = region.Name;
             updateRegion.RegionImageUrl = region.RegionImageUrl;
-            // Save Changes
+
+            // Save Changes to DB
             _dbContext.SaveChanges();
-            return Ok(updateRegion);
+
+            // Return an anonymous object without the id field
+            var updatedRegionResponse = new
+            {
+                Code = updateRegion.Code,
+                Name = updateRegion.Name,
+                RegionImageUrl = updateRegion.RegionImageUrl
+            };
+
+            return Ok(updatedRegionResponse);
         }
     }
 }
+g
