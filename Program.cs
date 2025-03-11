@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using NZRegionWalksAPI.Data;
+using NZRegionWalksAPI.Repositories;
 
 namespace NZRegionWalksAPI
 {
@@ -19,6 +20,12 @@ namespace NZRegionWalksAPI
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            /* Using SQL Repository */
+            builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>();
+
+            /*Using InMemoryRepository*/
+            //builder.Services.AddScoped<IRegionRepository, InMemoryRepository>();
 
             var app = builder.Build();
 
