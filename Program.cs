@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using NZRegionWalksAPI.Data;
+using NZRegionWalksAPI.Mappings;
 using NZRegionWalksAPI.Repositories;
 
 namespace NZRegionWalksAPI
@@ -26,6 +27,9 @@ namespace NZRegionWalksAPI
 
             /*Using InMemoryRepository*/
             //builder.Services.AddScoped<IRegionRepository, InMemoryRepository>();
+
+            // Registering AutoMapper
+            builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
             var app = builder.Build();
 
