@@ -89,6 +89,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "NZRegionWalksAPI.Controllers.WalksController",
+    "Method": "CreateWalk",
+    "RelativePath": "api/Walks",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "createWalkDTO",
+        "Type": "NZRegionWalksAPI.Models.DTOs.CreateWalkDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "NZRegionWalksAPI.Controllers.WeatherForecastController",
     "Method": "Get",
     "RelativePath": "WeatherForecast",

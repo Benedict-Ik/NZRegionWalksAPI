@@ -24,6 +24,7 @@ namespace NZRegionWalksAPI
 
             /* Using SQL Repository */
             builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>();
+            builder.Services.AddScoped<IWalkRepository, SQLWalkRepository>();
 
             /*Using InMemoryRepository*/
             //builder.Services.AddScoped<IRegionRepository, InMemoryRepository>();
