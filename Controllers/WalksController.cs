@@ -31,10 +31,24 @@ namespace NZRegionWalksAPI.Controllers
             walk = await _walkRepository.CreateWalkAsync(walk);
 
             // Mapping Domain Model to DTO
-            var walkDTO = _mapper.Map<CreateWalkDTO>(walk);
+            var walkDTO = _mapper.Map<WalkDTO>(walk);
 
             // Return DTO to Client
             return Ok(walkDTO);
+        }
+
+
+        /*GET WALKS*/
+        // GET: {baseUrl}/api/walks
+        [HttpGet]
+        public async Task<IActionResult> GetAllWalks()
+        {
+            // Calling Repository
+            var walks = await _walkRepository.GetAllWalksAsync();
+
+            // Mapping Domain Model to DTO
+            var walksDTO = _mapper.Map<List<WalkDTO>>(walks);
+            return Ok(walksDTO);
         }
     }
 }
