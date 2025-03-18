@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using NZRegionWalksAPI.CustomActionFilters;
 using NZRegionWalksAPI.Data;
 using NZRegionWalksAPI.Models.Domain;
 using NZRegionWalksAPI.Models.DTOs;
@@ -61,34 +62,29 @@ namespace NZRegionWalksAPI.Controllers
         /* CREATE REGION */
         // POST: {baseUrl}/api/regions
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> CreateRegion([FromBody] CreateRegionDTO createRegionDTO)
         {
-            if (ModelState.IsValid)
-            {
-                // Mapping DTO to domain model
-                var region = mapper.Map<Region>(createRegionDTO);
+            // Mapping DTO to domain model
+            var region = mapper.Map<Region>(createRegionDTO);
 
-                // Use the repository to save the domain model to the database
-                region = await _regionRepository.CreateRegionAsync(region);
+            // Use the repository to save the domain model to the database
+            region = await _regionRepository.CreateRegionAsync(region);
 
-                // Using AutoMapper to map Domain Model to DTO
-                var regionDTO = mapper.Map<RegionDTO>(region);
+            // Using AutoMapper to map Domain Model to DTO
+            var regionDTO = mapper.Map<RegionDTO>(region);
 
-                // Return DTO to Client
-                return CreatedAtAction(nameof(GetRegionById), new { id = region.Id }, regionDTO);
-            }
-            return BadRequest(ModelState);
+            // Return DTO to Client
+            return CreatedAtAction(nameof(GetRegionById), new { id = region.Id }, regionDTO);
+
         }
 
         /* UPDATE REGION */
         // PUT: {baseUrl}/api/regions/{id}
         [HttpPut("{id}")]
+        [ValidateModel]
         public async Task<IActionResult> UpdateRegion(Guid id, [FromBody] UpdateRegionDTO updateRegionDTO)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
             // Get Data from Database - Domain Model
             var region = await _regionRepository.GetRegionByIdAsync(id);
 

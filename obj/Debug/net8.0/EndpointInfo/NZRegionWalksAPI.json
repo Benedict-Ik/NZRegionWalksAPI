@@ -334,17 +334,28 @@
         "additionalProperties": false
       },
       "CreateWalkDTO": {
+        "required": [
+          "description",
+          "difficultyId",
+          "lengthInKm",
+          "name",
+          "regionId"
+        ],
         "type": "object",
         "properties": {
           "name": {
-            "type": "string",
-            "nullable": true
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
           },
           "description": {
-            "type": "string",
-            "nullable": true
+            "maxLength": 1000,
+            "minLength": 1,
+            "type": "string"
           },
           "lengthInKm": {
+            "maximum": 1000,
+            "minimum": 0,
             "type": "number",
             "format": "double"
           },
@@ -389,20 +400,27 @@
       },
       "UpdateWalkDTO": {
         "required": [
-          "name"
+          "description",
+          "difficultyId",
+          "lengthInKm",
+          "name",
+          "regionId"
         ],
         "type": "object",
         "properties": {
           "name": {
-            "maxLength": 3,
-            "minLength": 3,
+            "maxLength": 100,
+            "minLength": 1,
             "type": "string"
           },
           "description": {
-            "type": "string",
-            "nullable": true
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
           },
           "lengthInKm": {
+            "maximum": 1000,
+            "minimum": 0,
             "type": "number",
             "format": "double"
           },
