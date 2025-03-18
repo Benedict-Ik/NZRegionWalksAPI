@@ -15,4 +15,3 @@ Here is what we did in this branch:
 		/* `Code` is the actual code to be executed if the model state is valid. */
 	```
 - Added nullability `?` to certain properties in model classes that are not required.
-- To avoid recurring ModelState validation, I created a folder called `CustomActionFilters` in which I added a file called `ValidateModelAttribute` for custom validations.
