@@ -63,18 +63,21 @@ namespace NZRegionWalksAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateRegion([FromBody] CreateRegionDTO createRegionDTO)
         {
-            // Mapping DTO to domain model
-            var region = mapper.Map<Region>(createRegionDTO);
+            if (ModelState.IsValid)
+            {
+                // Mapping DTO to domain model
+                var region = mapper.Map<Region>(createRegionDTO);
 
-            // Use the repository to save the domain model to the database
-            region = await _regionRepository.CreateRegionAsync(region);
+                // Use the repository to save the domain model to the database
+                region = await _regionRepository.CreateRegionAsync(region);
 
-            // Using AutoMapper to map Domain Model to DTO
-            var regionDTO = mapper.Map<RegionDTO>(region);
+                // Using AutoMapper to map Domain Model to DTO
+                var regionDTO = mapper.Map<RegionDTO>(region);
 
-            // Return DTO to Client
-            return CreatedAtAction(nameof(GetRegionById), new { id = region.Id }, regionDTO);
-
+                // Return DTO to Client
+                return CreatedAtAction(nameof(GetRegionById), new { id = region.Id }, regionDTO);
+            }
+            return BadRequest(ModelState);
         }
 
         /* UPDATE REGION */
@@ -82,6 +85,10 @@ namespace NZRegionWalksAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateRegion(Guid id, [FromBody] UpdateRegionDTO updateRegionDTO)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             // Get Data from Database - Domain Model
             var region = await _regionRepository.GetRegionByIdAsync(id);
 
