@@ -1,6 +1,6 @@
 Here is what we did in this branch:
 
-- Here are the brief steps to set up an authentication database:
+- Here are the brief steps we took to set up an authentication database:
 
 1. Installed required NuGet packages (if not already installed):
 
