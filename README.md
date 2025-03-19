@@ -3,6 +3,7 @@ Here is what we did in this branch:
 - Here are the brief steps to set up an authentication database:
 
 1. Install required NuGet packages (if not already installed):
+
     a. Microsoft.AspNetCore.Identity.EntityFrameworkCore:
         This package provides the Entity Framework Core implementation for ASP.NET Core Identity. It allows you to store user data and authentication information in a database using Entity Framework Core.
 
