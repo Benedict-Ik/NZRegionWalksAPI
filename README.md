@@ -13,7 +13,7 @@ Here is what we did in this branch:
     c. Microsoft.AspNetCore.Identity.UI (optional):
     This package provides pre-built UI components for ASP.NET Core Identity, such as login, registration, and profile management pages. You can use these components to quickly scaffold a basic authentication system in your application.
 
-2. Created a database context:
+2. Created a database context (DBContext):
     - Configure the database connection string in the `appsettings.json` file.
     - Create a new class that inherits from IdentityDbContext
 
