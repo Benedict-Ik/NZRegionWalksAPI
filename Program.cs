@@ -25,6 +25,12 @@ namespace NZRegionWalksAPI
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            // Injecting IdentityDbContext
+            builder.Services.AddDbContext<NZRegionWalksAuthDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultAuthConnection"));
+            });
+
             /* Using SQL Repository */
             builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>();
             builder.Services.AddScoped<IWalkRepository, SQLWalkRepository>();

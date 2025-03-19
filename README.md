@@ -1,6 +1,23 @@
 Here is what we did in this branch:
 
-- We added the `[Authorize]` attribute to the methods in the Controller classes that we want to secure. This means that only authenticated users can access the methods within the controller class.
-- Alternatively (which was omitted here), we can apply the `[Authorize]` attribute to specific methods within the controller class. This means that only authenticated users can access the specific methods within the controller class.
-- In instances where we want to allow anonymous access to a method, we can use the `[AllowAnonymous]` attribute decorated on that method. This means that the method can be accessed by both authenticated and unauthenticated users.
-- Based on the above settings, if we tried to access any of the methods that are secured by the `[Authorize]` attribute, we won't be permitted.
+- Here are the brief steps to set up an authentication database:
+
+1. Install required NuGet packages (if not already installed):
+    a. Microsoft.AspNetCore.Identity.EntityFrameworkCore:
+        This package provides the Entity Framework Core implementation for ASP.NET Core Identity. It allows you to store user data and authentication information in a database using Entity Framework Core.
+
+    b. Microsoft.EntityFrameworkCore.SqlServer (or your preferred database provider):
+        This package provides the SQL Server database provider for Entity Framework Core. It allows you to connect to a SQL Server database and perform CRUD (Create, Read, Update, Delete) operations. You can replace this with your preferred database provider (e.g., MySQL, PostgreSQL, etc.).
+
+    c. Microsoft.AspNetCore.Identity.UI (optional):
+    This package provides pre-built UI components for ASP.NET Core Identity, such as login, registration, and profile management pages. You can use these components to quickly scaffold a basic authentication system in your application.
+
+2. Create a database context:
+    - Configure the database connection string in the `appsettings.json` file.
+    - Create a new class that inherits from IdentityDbContext
+
+3. Configure Identity:
+    - In Program.cs (or Startup.cs), inject IdentityDbContext to the DI container
+    - Optional: Configure Identity options (e.g., password requirements)
+
+4. In the new class that inherits from IdentityDbContext, seed the database with default users and roles.
