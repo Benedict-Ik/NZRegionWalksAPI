@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NZRegionWalksAPI.CustomActionFilters;
 using NZRegionWalksAPI.Data;
@@ -10,6 +11,7 @@ namespace NZRegionWalksAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class RegionsController : ControllerBase
     {
         private readonly NZRegionWalksDbContext _dbContext;
