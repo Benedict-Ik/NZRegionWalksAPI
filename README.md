@@ -2,7 +2,7 @@ Here is what we did in this branch:
 
 - Here are the brief steps to set up an authentication database:
 
-1. Install required NuGet packages (if not already installed):
+1. Installed required NuGet packages (if not already installed):
 
     a. Microsoft.AspNetCore.Identity.EntityFrameworkCore:
         This package provides the Entity Framework Core implementation for ASP.NET Core Identity. It allows you to store user data and authentication information in a database using Entity Framework Core.
@@ -13,12 +13,12 @@ Here is what we did in this branch:
     c. Microsoft.AspNetCore.Identity.UI (optional):
     This package provides pre-built UI components for ASP.NET Core Identity, such as login, registration, and profile management pages. You can use these components to quickly scaffold a basic authentication system in your application.
 
-2. Create a database context:
+2. Created a database context:
     - Configure the database connection string in the `appsettings.json` file.
     - Create a new class that inherits from IdentityDbContext
 
-3. Configure Identity:
+3. Configured Identity:
     - In Program.cs (or Startup.cs), inject IdentityDbContext to the DI container
     - Optional: Configure Identity options (e.g., password requirements)
 
-4. In the new class that inherits from IdentityDbContext, seed the database with default users and roles.
+4. In the new class that inherits from IdentityDbContext, we seeded the database with default users and roles.
