@@ -45,7 +45,7 @@ namespace NZRegionWalksAPI
             builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
             // Adding Identity
-            builder.Services.AddIdentityCore<IdentityRole>()
+            builder.Services.AddIdentityCore<IdentityUser>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<NZRegionWalksAuthDbContext>()
                 .AddDefaultTokenProviders();

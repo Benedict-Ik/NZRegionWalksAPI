@@ -1,5 +1,21 @@
 [
   {
+    "ContainingType": "NZRegionWalksAPI.Controllers.AuthController",
+    "Method": "Register",
+    "RelativePath": "api/Auth/register",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "registerRequestDTO",
+        "Type": "NZRegionWalksAPI.Models.DTOs.RegisterRequestDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "NZRegionWalksAPI.Controllers.RegionsController",
     "Method": "GetAllRegions",
     "RelativePath": "api/Regions",
