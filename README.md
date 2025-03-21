@@ -1,89 +1,103 @@
-Here is what we did in this branch:
+### Understanding the differences between Identity DbContext, Identity, and configuring Identity Options
 
-A brief overview of the steps we have carried out so far:  
+**Identity DbContext**
+---
+- A DbContext is a class that represents a session with the database.
+- Identity DbContext is a specialized DbContext that inherits from IdentityDbContext<TUser> (where TUser is the type of user).
+- It provides the database schema for storing user data, roles, and other identity-related information.
+- You typically create a custom Identity DbContext class that inherits from IdentityDbContext<TUser> and configure it to use your desired database provider.
+- This has already been done in previous branches.  
 
-Step 1: Installed required NuGet packages (if not already installed)  
-Step 2: Created an Identity database context (DBContext) called `NZRegionWalksAuthDbContext` that inherits from IdentityDbContext  
-Step 3: Configured Identity services in the `Program.cs` file  
-Step 4. In the new class that inherits from IdentityDbContext, we seeded the database with default users and roles.
+**Identity**
+---
+- Identity refers to the ASP.NET Core Identity system, which provides a membership system for managing user data, authentication, and authorization.
+- Identity provides features like user registration, login, password reset, and role-based authorization.
+- Identity is built on top of the Entity Framework Core and uses the Identity DbContext to store and retrieve user data.  
 
-Step 5: Open Package Manager Console and run Migration command to create the `Auth` database tables.
-  
-```sh
-   Add-Migration Creating Auth Database
- ```
-
-<br>
-
-The above command will fail due to the presence of multiple DbContexts in the project. To fix this, we need to specify the DbContext we want to create the migration for using the -Context parameter. We can do this by running the following command:
-
-```sh
-   Add-Migration CreatingAuthDatabase -Context NZRegionWalksAuthDbContext
-```  
-<br>
-
-At this point, you may run into the following error:
-
-*Unable to create a 'DbContext' of type 'NZRegionWalksAuthDbContext'. The exception 'Failed to load configuration from file <path> was thrown while attempting to create an instance. For the different patterns supported at design time, see https://go.microsoft.com/fwlink/?linkid=851728*
-
-To fix this, we will need to modify the names of the configuration files in the `appsettings.json` file. We will need to change the names of the configuration files to match the DbContext names. For example, the `appsettings.json` file should look like this:
-```json
-{
-  "ConnectionStrings": {
-	"NZRegionWalksDbContext": "Server=(localdb)\\mssqllocaldb;Database=NZRegionWalks;Trusted_Connection=True;MultipleActiveResultSets=true",
-	"NZRegionWalksAuthDbContext": "Server=(localdb)\\mssqllocaldb;Database=Auth;Trusted_Connection=True;MultipleActiveResultSets=true"
-  }
-}
-```
-<br>  
+**Configuring Identty Options**
+---
+- Configuring Identity Options refers to customizing the behavior of the ASP.NET Core Identity system.
+- This includes settings like password requirements, lockout policies, and user confirmation requirements.
+- You can configure Identity Options in the Program.cs file, typically in the ConfigureServices method, using the services.Configure<IdentityOptions>(options => { ... }); syntax.
 
 ---
-**Important Note**  
-- In EF Core, the connection string name must match the DbContext name. If the connection string name does not match the DbContext name, the migration command will fail.
-- This is because EF Core uses the connection string name to determine which DbContext to use when creating the migration.
-- So, if you have a DbContext named `NZRegionWalksDbContext`, the connection string name must be `NZRegionWalksDbContext` as well.
-- Currently, you must have observed we have two DbContext in our project: The Application DbContext `NZRegionWalksDbContext` and the Identity DbContext `NZRegionWalksAuthDbContext`. 
-- To run migrations with multiple DbContexts, you'll have to specify the DbContext you want to create the migration for using the -Context parameter, otherwise the migration command will fail.
-- For example, to create a migration for the `NZRegionWalksAuthDbContext`, you would run the following command:
-```sh
-   Add-Migration CreatingAuthDatabase -Context NZRegionWalksAuthDbContext
-```
-- This will create a migration for the `NZRegionWalksAuthDbContext`.
-- To update the database with the necessary tables for the `NZRegionWalksAuthDbContext`, you would run the following command:
-```sh
-   Update-Database -Context NZRegionWalksAuthDbContext
-```
+
+In summary, here we added Identity and IdentityOptions to Program.cs  
+
+**Adding Identity**
 ---
-Modified connection strings in `appsettings.json` file to match the DbContext names.
-```json
-{
-  "ConnectionStrings": {
-	"NZRegionWalksDbContext": "Server=(localdb)\\mssqllocaldb;Database=NZRegionWalks;Trusted_Connection=True;MultipleActiveResultSets=true",
-	"NZRegionWalksAuthDbContext": "Server=(localdb)\\mssqllocaldb;Database=Auth;Trusted_Connection=True;MultipleActiveResultSets=true"
-  }
-}
-```  
-<br>Modified program.cs file to use the `NZRegionWalksAuthDbContext` for the Identity service.
-```csharp
- /* Injecting Application DbContext */*
-builder.Services.AddDbContext<NZRegionWalksDbContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("NZRegionWalksDbContext"));
-});
+```Csharp
+  builder.Services.AddIdentityCore<IdentityRole>()
+      .AddRoles<IdentityRole>()
+      .AddEntityFrameworkStores<NZRegionWalksAuthDbContext>()
+      .AddDefaultTokenProviders();
+```
+The code  provided aims to add ASP.NET Core Identity to your application, specifically configuring it to use roles.
 
-/* Injecting Identity DbContext */
-builder.Services.AddDbContext<NZRegionWalksAuthDbContext>(options =>
+Here's a breakdown of what each part does:
+
+1. builder.Services.AddIdentityCore<IdentityRole>():
+
+- Adds the core Identity services to the application.
+- Specifies IdentityRole as the type of role.
+
+2. .AddRoles<IdentityRole>():
+
+- Adds role-based authorization services to Identity.
+- Uses the IdentityRole class to represent roles.
+
+3. .AddEntityFrameworkStores<NZRegionWalksAuthDbContext>():
+
+- Configures Identity to use Entity Framework Core for data storage.
+- Specifies NZRegionWalksAuthDbContext as the DbContext to use.
+
+4. .AddDefaultTokenProviders():
+
+- Adds the default token providers for generating tokens (e.g., for password reset, email confirmation).
+- Enables features like password reset, email confirmation, and two-factor authentication.
+
+By adding these services, you're setting up ASP.NET Core Identity to manage users, roles, and authorization in your application.  
+
+**Configuring IdentityOptions**
+---
+```CSharp
+builder.Services.Configure<IdentityOptions>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("NZRegionWalksAuthDbContext"));
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequiredLength = 6;
+    options.User.RequireUniqueEmail = true;
 });
 ```
-<br>In some instances, when you try to run the migration command, you may encounter the following error:
-"*Connection property has not been initialized.*"  
 
-To fix this, you may need to add a `DesignTimeDbContextFactory` class to the project (preferably the data folder). This class will be used by the migration command to create an instance of the DbContext.  
+The code provided aims to configure the password and user settings for ASP.NET Core Identity.
 
-Since migrations are run at design time (and outside the application DI container), the migration command needs a way to create an instance of the DbContext. The `DesignTimeDbContextFactory` class provides a way to create an instance of the DbContext at design time. It helps to provide the necessary configuration for the DbContext to be created at design time.  
+Here's a breakdown of what each part does:
 
-In some instances, you may need to rerun the migration command after adding the `DesignTimeDbContextFactory` class to the project.  
+1. options.Password.RequireDigit = false;:
 
-After running the `Update-Database` command, you should see the `Auth` database created in the SQL Server Object Explorer with appropriate tables.
+- Disables the requirement for passwords to contain at least one digit.
+
+2. options.Password.RequireLowercase = false;:
+
+- Disables the requirement for passwords to contain at least one lowercase letter.
+
+3. options.Password.RequireNonAlphanumeric = false;:
+
+- Disables the requirement for passwords to contain at least one non-alphanumeric character (e.g., !, @, #, etc.).
+
+4. options.Password.RequireUppercase = false;:
+
+- Disables the requirement for passwords to contain at least one uppercase letter.
+
+5. options.Password.RequiredLength = 6;:
+
+- Sets the minimum required length for passwords to 6 characters.
+
+6. options.User.RequireUniqueEmail = true;:
+
+- Enables the requirement for users to have a unique email address.
+
+By configuring these settings, you're relaxing the password requirements and enforcing unique email addresses for users in your application.

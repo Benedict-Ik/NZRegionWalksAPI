@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NZRegionWalksAPI.Data;
@@ -42,6 +43,23 @@ namespace NZRegionWalksAPI
 
             // Registering AutoMapper
             builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
+
+            // Adding Identity
+            builder.Services.AddIdentityCore<IdentityRole>()
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<NZRegionWalksAuthDbContext>()
+                .AddDefaultTokenProviders();
+
+            // Setting up Identity Options  
+            builder.Services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 6;
+                options.User.RequireUniqueEmail = true;
+            });
 
             // Adding JWT Authentication
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
