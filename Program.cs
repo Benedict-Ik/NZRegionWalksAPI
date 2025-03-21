@@ -20,15 +20,17 @@ namespace NZRegionWalksAPI
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            // Injecting Application DbContext
             builder.Services.AddDbContext<NZRegionWalksDbContext>(options =>
             {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("NZRegionWalksDbContext"));
             });
 
-            // Injecting IdentityDbContext
+            // Injecting Identity DbContext
             builder.Services.AddDbContext<NZRegionWalksAuthDbContext>(options =>
             {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultAuthConnection"));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("NZRegionWalksAuthDbContext"));
             });
 
             /* Using SQL Repository */
