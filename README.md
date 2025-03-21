@@ -1,4 +1,4 @@
-### Understanding the differences between Identity DbContext, Identity, and configuring Identity Options
+## Understanding the differences between Identity DbContext, Identity, and configuring Identity Options
 
 **Identity DbContext**
 ---
