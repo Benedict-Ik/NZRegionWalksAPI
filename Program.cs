@@ -50,7 +50,7 @@ namespace NZRegionWalksAPI
                 .AddEntityFrameworkStores<NZRegionWalksAuthDbContext>()
                 .AddDefaultTokenProviders();
 
-            // Setting up Identity Options  
+            // Configuring Identity Options  
             builder.Services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequireDigit = false;
