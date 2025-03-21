@@ -1,6 +1,11 @@
 Here is what we did in this branch:
 
-- Here are the brief steps we took as we continued the setup of our authentication database:
+A brief overview of the steps we have carried out so far:  
+
+	1. Installed required NuGet packages (if not already installed)
+	2. Created an Identity database context (DBContext) called `NZRegionWalksAuthDbContext` that inherits from IdentityDbContext
+	3. Configured Identity services in the `Program.cs` file
+	4. In the new class that inherits from IdentityDbContext, we seeded the database with default users and roles.
 
 5. Open Package Manager Console and run Migration command to create the `Auth` database tables.
   
