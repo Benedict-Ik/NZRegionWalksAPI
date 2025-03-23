@@ -18,7 +18,17 @@ Below is a step-by-step breakdown of what the implemented method - `GenerateJWTT
 
 6. Return the token: Finally, it returns the generated JWT token as a string.
 
-The purpose of this method is to create a secure token that can be used to authenticate and authorize users, incorporating their email and roles.  
+The purpose of this method is to create a secure token that can be used to authenticate and authorize users, incorporating their email and roles.    
+
+---
+
+Here's a high-level overview of the JWT generation process:
+
+1. Create claims: The method creates a list of claims based on the user's email and roles.
+2. Sign the claims: The method signs the claims using a secret key.
+3. Encode the claims: The method encodes the signed claims into a JWT token.
+4. Return the JWT token: The method returns the generated JWT token as a string.
+
 
 ---
 
