@@ -16,7 +16,7 @@ namespace NZRegionWalksAPI.Controllers
         }
 
         // POST: api/Auth/Register 
-        [HttpPost("register")]
+        [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequestDTO registerRequestDTO)
         {
             var identityUser = new IdentityUser
@@ -41,6 +41,18 @@ namespace NZRegionWalksAPI.Controllers
                 }
             }
             return BadRequest("Something went wrong.");
+        }
+
+        // POST: api/Auth/Login
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequestDTO loginRequestDTO)
+        {
+            var identityUser = await userManager.FindByEmailAsync(loginRequestDTO.Username);
+            if (identityUser != null && await userManager.CheckPasswordAsync(identityUser, loginRequestDTO.Password))
+            {
+                return Ok("User logged in successfully.");
+            }
+            return BadRequest("Invalid login details.");
         }
     }
 }
