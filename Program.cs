@@ -25,13 +25,13 @@ namespace NZRegionWalksAPI
             // Injecting Application DbContext
             builder.Services.AddDbContext<NZRegionWalksDbContext>(options =>
             {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("NZRegionWalksDbContext"));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("NZRegionWalksConnection"));
             });
 
             // Injecting Identity DbContext
             builder.Services.AddDbContext<NZRegionWalksAuthDbContext>(options =>
             {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("NZRegionWalksAuthDbContext"));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("NZRegionWalksAuthConnection"));
             });
 
             /* Using SQL Repository */

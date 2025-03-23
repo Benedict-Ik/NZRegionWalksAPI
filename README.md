@@ -1,103 +1,30 @@
-## Understanding the differences between Identity DbContext, Identity, and configuring Identity Options
+Here is what we did in this branch:  
 
-**Identity DbContext**
+- We began by creating a new controller called `Auth Controller` which will be responsible for handling all the authentication related requests.
+- For starters, in this branch, we are only implementing the `register` method which will be responsible for registering a new user.
+- The `register` method takes in information such as `Username`, `Password`, and `Roles` and will return a response based on the success or failure of the registration process. Bear in mind that the username is also the user's email.
+- To effect the above, we created a new model called `RegisterRequestDTO` which will be responsible for holding the information that will be passed to the `register` method.
+
+**Corrections**
 ---
-- A DbContext is a class that represents a session with the database.
-- Identity DbContext is a specialized DbContext that inherits from IdentityDbContext<TUser> (where TUser is the type of user).
-- It provides the database schema for storing user data, roles, and other identity-related information.
-- You typically create a custom Identity DbContext class that inherits from IdentityDbContext<TUser> and configure it to use your desired database provider.
-- This has already been done in previous branches.  
-
-**Identity**
----
-- Identity refers to the ASP.NET Core Identity system, which provides a membership system for managing user data, authentication, and authorization.
-- Identity provides features like user registration, login, password reset, and role-based authorization.
-- Identity is built on top of the Entity Framework Core and uses the Identity DbContext to store and retrieve user data.  
-
-**Configuring Identty Options**
----
-- Configuring Identity Options refers to customizing the behavior of the ASP.NET Core Identity system.
-- This includes settings like password requirements, lockout policies, and user confirmation requirements.
-- You can configure Identity Options in the Program.cs file, typically in the ConfigureServices method, using the services.Configure<IdentityOptions>(options => { ... }); syntax.
-
----
-
-In summary, here we added Identity and IdentityOptions to Program.cs  
-
-**Adding Identity**
----
-```Csharp
-  builder.Services.AddIdentityCore<IdentityRole>()
-      .AddRoles<IdentityRole>()
-      .AddEntityFrameworkStores<NZRegionWalksAuthDbContext>()
-      .AddDefaultTokenProviders();
-```
-The code  provided aims to add ASP.NET Core Identity to your application, specifically configuring it to use roles.
-
-Here's a breakdown of what each part does:
-
-1. builder.Services.AddIdentityCore<IdentityRole>():
-
-- Adds the core Identity services to the application.
-- Specifies IdentityRole as the type of role.
-
-2. .AddRoles<IdentityRole>():
-
-- Adds role-based authorization services to Identity.
-- Uses the IdentityRole class to represent roles.
-
-3. .AddEntityFrameworkStores<NZRegionWalksAuthDbContext>():
-
-- Configures Identity to use Entity Framework Core for data storage.
-- Specifies NZRegionWalksAuthDbContext as the DbContext to use.
-
-4. .AddDefaultTokenProviders():
-
-- Adds the default token providers for generating tokens (e.g., for password reset, email confirmation).
-- Enables features like password reset, email confirmation, and two-factor authentication.
-
-By adding these services, you're setting up ASP.NET Core Identity to manage users, roles, and authorization in your application.  
-
-**Configuring IdentityOptions**
----
-```CSharp
-builder.Services.Configure<IdentityOptions>(options =>
+- We corrected a typo in our `Program.cs` file where we were using the wrong connection string.
+- The modified line is:
+```csharp
+// Injecting Application DbContext
+builder.Services.AddDbContext<NZRegionWalksDbContext>(options =>
 {
-    options.Password.RequireDigit = false;
-    options.Password.RequireLowercase = false;
-    options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequireUppercase = false;
-    options.Password.RequiredLength = 6;
-    options.User.RequireUniqueEmail = true;
+    options.UseSqlServer(builder.Configuration.GetConnectionString("NZRegionWalksConnection"));
+});
+
+// Injecting Identity DbContext
+builder.Services.AddDbContext<NZRegionWalksAuthDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("NZRegionWalksAuthConnection"));
 });
 ```
 
-The code provided aims to configure the password and user settings for ASP.NET Core Identity.
-
-Here's a breakdown of what each part does:
-
-1. options.Password.RequireDigit = false;:
-
-- Disables the requirement for passwords to contain at least one digit.
-
-2. options.Password.RequireLowercase = false;:
-
-- Disables the requirement for passwords to contain at least one lowercase letter.
-
-3. options.Password.RequireNonAlphanumeric = false;:
-
-- Disables the requirement for passwords to contain at least one non-alphanumeric character (e.g., !, @, #, etc.).
-
-4. options.Password.RequireUppercase = false;:
-
-- Disables the requirement for passwords to contain at least one uppercase letter.
-
-5. options.Password.RequiredLength = 6;:
-
-- Sets the minimum required length for passwords to 6 characters.
-
-6. options.User.RequireUniqueEmail = true;:
-
-- Enables the requirement for users to have a unique email address.
-
-By configuring these settings, you're relaxing the password requirements and enforcing unique email addresses for users in your application.
+- Once all these have been effected, you can go ahead to test the Register method of the `Auth` endpoint. 
+- If successful, you should see a response similar to the one below:
+```json
+ "User was registered successfully"
+```

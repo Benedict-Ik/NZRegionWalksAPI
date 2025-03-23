@@ -38,9 +38,6 @@ namespace NZRegionWalksAPI.Controllers
                     {
                         return Ok("User was registered successfully.");
                     }
-                    {
-
-                    }
                 }
             }
             return BadRequest("Something went wrong.");
