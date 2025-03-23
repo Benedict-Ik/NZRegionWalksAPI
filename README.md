@@ -1,6 +1,6 @@
 Here is what we did in this branch:  
 
-- We began by creating a new controller called `Auth Controller` which will be responsible for handling all the authentication related requests.
+- We began by creating a new controller called `AuthController` which will be responsible for handling all the authentication related requests.
 - For starters, in this branch, we are only implementing the `register` method which will be responsible for registering a new user.
 - The `register` method takes in information such as `Username`, `Password`, and `Roles` and will return a response based on the success or failure of the registration process. Bear in mind that the username is also the user's email.
 - To effect the above, we created a new model called `RegisterRequestDTO` which will be responsible for holding the information that will be passed to the `register` method.
