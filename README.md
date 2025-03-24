@@ -1,7 +1,7 @@
 Here is what we did in this branch:  
 
 - In this branch, we implemented the Role-Based authentication.
-- This enables those with `reader` role to only read the data, and those with `writer` role to read and write the data.
+- This enables those with `Reader` role to only read the data, and those with `Writer` role to read and write the data.
 - For simplicity, a reader role can be used to access the GET methods, and a writer role can be used to access the POST, PUT, and DELETE methods. 
 - For starters, we removed the `[Authorize]` attribute at the Controller level and instead placed it at individual action methods.
 - Now that our `Authorize` attribute is at the action method level, we can now specify the roles that can access the action method by using the `Roles` parameter.
