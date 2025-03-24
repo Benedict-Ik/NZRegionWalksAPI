@@ -23,3 +23,5 @@ Here is what we did in this branch:
 - Optionally, you can just use the `[Authorize]` attribute without specifying any roles.
 
 - If you haven't, right now, you can use the `Register()` method to create users with `Reader` and `Writer` roles.
+- Then test by accessing accessible and inaccessible methods.
+- Whenever you try to access a method you don't have access to, it should return a `403 Forbidden` error.
