@@ -1,27 +1,70 @@
 Here is what we did in this branch:  
 
-- In this branch, we implemented the Role-Based authentication.
-- This enables those with `Reader` role to only read the data, and those with `Writer` role to read and write the data.
-- For simplicity, a reader role can be used to access the GET methods, and a writer role can be used to access the POST, PUT, and DELETE methods. 
-- For starters, we removed the `[Authorize]` attribute at the Controller level and instead placed it at individual action methods.
-- Now that our `Authorize` attribute is at the action method level, we can now specify the roles that can access the action method by using the `Roles` parameter.
-- Example: For `Reader` role:
+- To enable this, we have to modify the `AddSwaggerGen()` method in the `Program.cs` file.
+- Below is the modified method
 ```csharp
-[Authorize(Roles = "Reader")]
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "NZRegionWalksAPI", Version = "v1" });
+    options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = JwtBearerDefaults.AuthenticationScheme,
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = JwtBearerDefaults.AuthenticationScheme,
+                },
+                Scheme = "oauth2",
+                Name = JwtBearerDefaults.AuthenticationScheme,
+                In = ParameterLocation.Header,
+            },
+            new List<string> ()
+        },
+    });
+});
 ```
+Explaining the above code
+---
+**builder.Services.AddSwaggerGen(options => { ... });**
+- builder.Services: This is a reference to the IServiceCollection instance, which is used to register services in the ASP.NET Core application.
+- AddSwaggerGen: This method adds Swagger generation services to the application.
+- options => { ... }: This is a lambda expression that configures the Swagger generation options.
 
-- Example: For `Writer` role:
-```csharp
-[Authorize(Roles = "Writer")]
-```
+**options.SwaggerDoc("v1", new OpenApiInfo { ... });**
+- SwaggerDoc: This method adds a Swagger document to the application.
+- "v1": This is the version of the Swagger document.
+- new OpenApiInfo { ... }: This creates a new instance of OpenApiInfo, which contains metadata about the API.
+    - Title = "NZRegionWalksAPI": Sets the title of the API.
+    - Version = "v1": Sets the version of the API.
 
-- Example: For `Reader` and `Writer` roles:
-```csharp
-[Authorize(Roles = "Reader, Writer")]
-```
+**options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme { ... });**
+- AddSecurityDefinition: This method adds a security definition to the Swagger document.
+- JwtBearerDefaults.AuthenticationScheme: This is the authentication scheme for JWT Bearer tokens.
+- new OpenApiSecurityScheme { ... }: This creates a new instance of OpenApiSecurityScheme, which defines the security scheme.
+    - Name = "Authorization": Sets the name of the security scheme.
+    - In = ParameterLocation.Header: Specifies that the security scheme is applied to the Authorization header.
+    - Type = SecuritySchemeType.ApiKey: Specifies that the security scheme is an API key.
+    - Scheme = JwtBearerDefaults.AuthenticationScheme: Specifies the authentication scheme.
 
-- Optionally, you can just use the `[Authorize]` attribute without specifying any roles.
+**options.AddSecurityRequirement(new OpenApiSecurityRequirement { ... });**
+- AddSecurityRequirement: This method adds a security requirement to the Swagger document.
+- new OpenApiSecurityRequirement { ... }: This creates a new instance of OpenApiSecurityRequirement, which defines the security requirement.
+    - new List<string> (): This creates an empty list of scopes.
+    - new OpenApiSecurityScheme { ... }: This creates a new instance of OpenApiSecurityScheme, which references the security scheme defined earlier.
+        - Reference = new OpenApiReference { ... }: This creates a new instance of OpenApiReference, which references the security scheme.
+            - Type = ReferenceType.SecurityScheme: Specifies the type of reference.
+            - Id = JwtBearerDefaults.AuthenticationScheme: Specifies the ID of the security scheme.
+        - Scheme = "oauth2": Specifies the authentication scheme.
+        - Name = JwtBearerDefaults.AuthenticationScheme: Specifies the name of the security scheme.
+        - In = ParameterLocation.Header: Specifies that the security scheme is applied to the Authorization header.
 
-- If you haven't, right now, you can use the `Register()` method to create users with `Reader` and `Writer` roles.
-- Then test by accessing accessible and inaccessible methods.
-- Whenever you try to access a method you don't have access to, it should return a `403 Forbidden` error.
