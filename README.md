@@ -5,7 +5,7 @@ Here is what we did in this branch:
 - For simplicity, a reader role can be used to access the GET methods, and a writer role can be used to access the POST, PUT, and DELETE methods. 
 - For starters, we removed the `[Authorize]` attribute at the Controller level and instead placed it at individual action methods.
 - Now that our `Authorize` attribute is at the action method level, we can now specify the roles that can access the action method by using the `Roles` parameter.
-- Example: For `reader` role:
+- Example: For `Reader` role:
 ```csharp
 [Authorize(Roles = "Reader")]
 ```
