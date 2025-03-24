@@ -1,5 +1,7 @@
 Here is what we did in this branch:  
 
+- First removed the [Authorize] attribute from controller level and placed them in individual action methods.
+- Enabled `Authentication` feature in Swagger UI.
 - To enable this, we have to modify the `AddSwaggerGen()` method in the `Program.cs` file.
 - Below is the modified method
 ```csharp
@@ -33,6 +35,33 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 ```
+
+Steps in Running Authentication in Swagger UI
+---
+Step 1: Open Swagger UI  
+Run the application to open Swagger UI.
+
+Step 2: Click on the "Authorize" Button  
+Click on the Authorize button located in the top right corner of the Swagger UI page.
+
+Step 3: Enter the JWT Token  
+Enter the JWT token obtained from your authentication endpoint (e.g., /api/token) in the Value field. 
+```sh
+Bearer <JWT Token>
+```
+where \<JWT Token> is the token obtained from the authentication endpoint.
+
+Step 4: Click on the "Authorize" Button  
+Click on the Authorize button to authenticate.
+
+Step 5: Test Authenticated Endpoints  
+You can now test authenticated endpoints by clicking on the endpoint and then clicking the Try it out button.
+
+The authenticated endpoint will use the JWT token to authenticate the request.
+
+
+
+
 Explaining the above code
 ---
 **builder.Services.AddSwaggerGen(options => { ... });**

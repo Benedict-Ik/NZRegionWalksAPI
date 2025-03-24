@@ -10,7 +10,6 @@ namespace NZRegionWalksAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class WalksController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -26,6 +25,7 @@ namespace NZRegionWalksAPI.Controllers
         /* GET WALKS */
         // GET: {baseUrl}/api/walks
         [HttpGet]
+        [Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetAllWalks()
         {
             // Calling Repository
@@ -39,6 +39,7 @@ namespace NZRegionWalksAPI.Controllers
         /* GET WALKS BY ID */
         // GET: {baseUrl}/api/walks/{id}
         [HttpGet("{id}")]
+        [Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetWalkById(Guid id)
         {
             // Calling Repository
@@ -59,6 +60,7 @@ namespace NZRegionWalksAPI.Controllers
         //POST: {baseUrl}/api/walks
         [HttpPost]
         [ValidateModel]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> CreateWalk([FromBody] CreateWalkDTO createWalkDTO)
         {
             // Mapping DTO to Domain Model
@@ -80,6 +82,7 @@ namespace NZRegionWalksAPI.Controllers
         // PUT: {baseUrl}/api/walks/{id}
         [HttpPut("{id}")]
         [ValidateModel]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> UpdateWalk([FromRoute] Guid id, UpdateWalkDTO updateWalkDTO)
         {
             // Map DTO to domain
@@ -101,6 +104,7 @@ namespace NZRegionWalksAPI.Controllers
 
         // DELETE: {baseUrl}/api/walks/{id}
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> DeleteWalk([FromRoute] Guid id)
         {
             // Calling Repository
