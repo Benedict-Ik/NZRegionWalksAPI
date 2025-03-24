@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NZRegionWalksAPI.Models.DTOs;
+using NZRegionWalksAPI.Repositories;
 
 namespace NZRegionWalksAPI.Controllers
 {
@@ -8,11 +9,13 @@ namespace NZRegionWalksAPI.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly ITokenRepository _tokenRepository;
 
-        public AuthController(UserManager<IdentityUser> userManager)
+        public AuthController(UserManager<IdentityUser> userManager, ITokenRepository tokenRepository)
         {
-            this.userManager = userManager;
+            this._userManager = userManager;
+            this._tokenRepository = tokenRepository;
         }
 
         // POST: api/Auth/Register 
@@ -25,14 +28,14 @@ namespace NZRegionWalksAPI.Controllers
                 Email = registerRequestDTO.Username,
             };
 
-            var identityResult = await userManager.CreateAsync(identityUser, registerRequestDTO.Password);
+            var identityResult = await _userManager.CreateAsync(identityUser, registerRequestDTO.Password);
 
             if (identityResult.Succeeded)
             {
                 // Add roles to the user
                 if (registerRequestDTO.Roles != null && registerRequestDTO.Roles.Any())
                 {
-                    identityResult = await userManager.AddToRolesAsync(identityUser, registerRequestDTO.Roles);
+                    identityResult = await _userManager.AddToRolesAsync(identityUser, registerRequestDTO.Roles);
 
                     if (identityResult.Succeeded)
                     {
@@ -47,10 +50,30 @@ namespace NZRegionWalksAPI.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDTO loginRequestDTO)
         {
-            var identityUser = await userManager.FindByEmailAsync(loginRequestDTO.Username);
-            if (identityUser != null && await userManager.CheckPasswordAsync(identityUser, loginRequestDTO.Password))
+            var identityUser = await _userManager.FindByEmailAsync(loginRequestDTO.Username);
+            if (identityUser != null && await _userManager.CheckPasswordAsync(identityUser, loginRequestDTO.Password))
             {
-                return Ok("User logged in successfully.");
+                // Get Roles for user
+                var roles = await _userManager.GetRolesAsync(identityUser);
+
+                if (roles != null)
+                {
+                    var jwtToken = _tokenRepository.GenerateJWTTokenAsync(identityUser, roles.ToList());
+
+                    // Anon Object
+                    //return Ok(new
+                    //{
+                    //    message = "User logged in successfully.",
+                    //    response = jwtToken
+                    //});
+
+                    var response = new LoginResponseDTO
+                    {
+                        JWTToken = await jwtToken
+                    };
+                    return Ok(response);
+                }
+                //return Ok("User logged in successfully.");
             }
             return BadRequest("Invalid login details.");
         }

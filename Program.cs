@@ -41,6 +41,8 @@ namespace NZRegionWalksAPI
             /*Using InMemoryRepository*/
             //builder.Services.AddScoped<IRegionRepository, InMemoryRepository>();
 
+            builder.Services.AddScoped<ITokenRepository, TokenRepository>();
+
             // Registering AutoMapper
             builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 

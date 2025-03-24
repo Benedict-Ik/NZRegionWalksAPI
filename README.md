@@ -1,44 +1,65 @@
 Here is what we did in this branch:  
 
-- Here, we created a repository for the token management to avoid cluttering our `AuthController` class and encourage separation of concerns.
-- We first created an interface called `ITokenRepository` with `GenerateJWTTokenAsync()` method. 
-- Afterwards, we then implemented the repository in a separate class called `TokenRepository`.  
+- We began by injecting the interface and its services into Program.cs
+```csharp
+builder.Services.AddScoped<ITokenRepository, TokenRepository>();
+```   
 
-Step-by-Step Breakdown of GenerateJWTTokenAsync() Method
+- Next, we injected the service into the `AuthController`'s class' constructor.
+- By convention and industry standard, we created a new model class called `LoginResponseDTO` that will take in the newly created JWTToken alongside other possible responses that will be defined later on
+- We use the newly created model to create an instance that can be used to pass the response below:
+
+```csharp
+public async Task<IActionResult> Login([FromBody] LoginRequestDTO loginRequestDTO)
+{
+var identityUser = await _userManager.FindByEmailAsync(loginRequestDTO.Username);
+if (identityUser != null && await _userManager.CheckPasswordAsync(identityUser, loginRequestDTO.Password))
+{
+    // Get Roles for user
+    var roles = await _userManager.GetRolesAsync(identityUser);
+
+    if (roles != null)
+    {
+        var jwtToken = _tokenRepository.GenerateJWTTokenAsync(identityUser, roles.ToList());
+
+        var response = new LoginResponseDTO
+        {
+            JWTToken = await jwtToken
+        };
+        return Ok(response);
+    }
+    //return Ok("User logged in successfully.");
+}
+return BadRequest("Invalid login details.");
+}
+```
+
+- Once you run the app, it should give a `200` response with the generated token. This signifies that you have been authenticated and authorized.
+- Even though you have now been authenticated and authorized into the system, you won't be able to access other methods via SWAGGER until its authentication feature has been enabled. Till then, we will make use of another tool called POSTMAN.
+- In POSTMAN, under the "Headers" tab, add an `Authorization` key and input the generated token in the provided field.
+- Authorization:
+```json
+Bearer <key>
+```
+where \<key> is the generated token.  
+
+- Alternatively, navigate to the "Authorization" tab, choose "Bearer Token" from the Auth Type, and in the "Token" field, enter the generated token.
+
+Testing a GET method in Postman
 ---
+1. Select the GET method from the dropdown menu.
+2. Enter the URL of the API endpoint, e.g., https://example.com/api/users.
+3. Add an Authorization header (as explained above) with a valid token.
+4. Send the request.
+5. Verify that the response status code is 200 OK and the response body contains the expected user data.
 
-1. Create claims: The method starts by creating a list of claims, which are statements about the user. It adds the user's email as a claim.
 
-2. Add role claims: It then iterates through the list of roles passed as an argument and adds each role as a separate claim.
-
-3. Create a secret key: The method retrieves a secret key from the application's configuration settings, which is used for signing the token.
-
-4. Create signing credentials: It creates signing credentials using the secret key and a specific security algorithm (HMAC SHA256).
-
-5. Generate the JWT token: The method then generates a JWT token, passing in the issuer, audience, claims, expiration time (15 minutes), and signing credentials.
-
-6. Return the token: Finally, it returns the generated JWT token as a string.
-
-The purpose of this method is to create a secure token that can be used to authenticate and authorize users, incorporating their email and roles.    
-
-High-level overview of the JWT generation process
+Testing a POST method in Postman
 ---
-1. Create claims: The method creates a list of claims based on the user's email and roles.
-2. Sign the claims: The method signs the claims using a secret key.
-3. Encode the claims: The method encodes the signed claims into a JWT token.
-4. Return the JWT token: The method returns the generated JWT token as a string.
+1. Select the POST method from the dropdown menu.
+2. Enter the URL of the API endpoint, e.g., https://example.com/api/users.
+3. Add an Authorization header (as explained above) with a valid token.
+4. Add JSON body data, e.g., {"name":"John Doe","email":"john.doe@example.com"}.
+5. Send the request.
+6. Verify that the response status code is 201 Created and the response body contains the expected user data.
 
-
-Understanding the role of Claims in Authentication
----
-- Claims are statements about a user that are encoded into a token. They can include information such as the user's email, roles, and other relevant data.
-- They are important because they provide a way to convey information about a user from one system to another, allowing for authentication, authorization, and access control.
-- A list of claims is created to represent the user's identity and attributes in a structured and standardized way. This list of claims is then embedded in a security token, such as a JSON Web Token (JWT), which is issued to the user after authentication.
-- The list of claims typically includes information such as:
-
-	a. User's name and email address
-	b. User's roles or group memberships  
-	c. User's permissions or access levels  
-	d. User's authentication method or factor
-
-- In the context of JWT tokens, claims are encoded into the token payload and can be decoded by the recipient to verify the user's identity and permissions.
