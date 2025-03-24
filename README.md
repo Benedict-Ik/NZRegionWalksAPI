@@ -1,64 +1,25 @@
 Here is what we did in this branch:  
 
-- We began by injecting the interface and its services into Program.cs
+- In this branch, we hope to implement the Role-Based authentication.
+- This will enable those with `reader` role to only read the data, and those with `writer` role to read and write the data.
+- For simplicity, a reader role can be used to access the GET methods, and a writer role can be used to access the POST, PUT, and DELETE methods. 
+- For starters, we removed the `[Authorize]` attribute at the Controller level and instead placed it at individual action methods.
+- Now that our `Authorize` attribute is at the action method level, we can now specify the roles that can access the action method by using the `Roles` parameter.
+- Example: For `reader` role:
 ```csharp
-builder.Services.AddScoped<ITokenRepository, TokenRepository>();
-```   
+[Authorize(Roles = "Reader")]
+```
 
-- Next, we injected the service into the `AuthController`'s class' constructor.
-- By convention and industry standard, we created a new model class called `LoginResponseDTO` that will take in the newly created JWTToken alongside other possible responses that will be defined later on.
-- We used the newly created model to create an instance that can be used to pass the response below:
-
+- Example: For `Writer` role:
 ```csharp
-public async Task<IActionResult> Login([FromBody] LoginRequestDTO loginRequestDTO)
-{
-var identityUser = await _userManager.FindByEmailAsync(loginRequestDTO.Username);
-if (identityUser != null && await _userManager.CheckPasswordAsync(identityUser, loginRequestDTO.Password))
-{
-    // Get Roles for user
-    var roles = await _userManager.GetRolesAsync(identityUser);
-
-    if (roles != null)
-    {
-        var jwtToken = _tokenRepository.GenerateJWTTokenAsync(identityUser, roles.ToList());
-
-        var response = new LoginResponseDTO
-        {
-            JWTToken = await jwtToken
-        };
-        return Ok(response);
-    }
-}
-return BadRequest("Invalid login details.");
-}
+[Authorize(Roles = "Writer")]
 ```
 
-- Once you run the app, it should give a `200` response with the generated token. This signifies that you have been authenticated and authorized.
-- Even though you have now been authenticated and authorized into the system, you won't be able to access other methods via SWAGGER until its authentication feature has been enabled. Till then, we will make use of another tool called POSTMAN.
-- In POSTMAN, under the "Headers" tab, add an `Authorization` key and input the generated token in the provided field.
-- Authorization:
+- Example: For `Reader` and `Writer` roles:
+```csharp
+[Authorize(Roles = "Reader, Writer")]
 ```
-Bearer <key>
-```
-where \<key> is the generated token.  
 
-- Alternatively, navigate to the "Authorization" tab, choose "Bearer Token" from the Auth Type, and in the "Token" field, enter the generated token.
+- Optionally, you can just use the `[Authorize]` attribute without specifying any roles.
 
-Testing a GET method in Postman
----
-1. Select the GET method from the dropdown menu.
-2. Enter the URL of the API endpoint, e.g., https://example.com/api/users.
-3. Add an Authorization header (as explained above) with a valid token.
-4. Send the request.
-5. Verify that the response status code is 200 OK and the response body contains the expected user data.
-
-
-Testing a POST method in Postman
----
-1. Select the POST method from the dropdown menu.
-2. Enter the URL of the API endpoint, e.g., https://example.com/api/users.
-3. Add an Authorization header (as explained above) with a valid token.
-4. Add JSON body data, e.g., {"name":"John Doe","email":"john.doe@example.com"}.
-5. Send the request.
-6. Verify that the response status code is 201 Created and the response body contains the expected user data.
-
+- If you haven't, right now, you can use the `Register()` method to create users with `Reader` and `Writer` roles.
