@@ -6,8 +6,8 @@ builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 ```   
 
 - Next, we injected the service into the `AuthController`'s class' constructor.
-- By convention and industry standard, we created a new model class called `LoginResponseDTO` that will take in the newly created JWTToken alongside other possible responses that will be defined later on
-- We use the newly created model to create an instance that can be used to pass the response below:
+- By convention and industry standard, we created a new model class called `LoginResponseDTO` that will take in the newly created JWTToken alongside other possible responses that will be defined later on.
+- We used the newly created model to create an instance that can be used to pass the response below:
 
 ```csharp
 public async Task<IActionResult> Login([FromBody] LoginRequestDTO loginRequestDTO)
@@ -28,7 +28,6 @@ if (identityUser != null && await _userManager.CheckPasswordAsync(identityUser, 
         };
         return Ok(response);
     }
-    //return Ok("User logged in successfully.");
 }
 return BadRequest("Invalid login details.");
 }
@@ -38,7 +37,7 @@ return BadRequest("Invalid login details.");
 - Even though you have now been authenticated and authorized into the system, you won't be able to access other methods via SWAGGER until its authentication feature has been enabled. Till then, we will make use of another tool called POSTMAN.
 - In POSTMAN, under the "Headers" tab, add an `Authorization` key and input the generated token in the provided field.
 - Authorization:
-```json
+```
 Bearer <key>
 ```
 where \<key> is the generated token.  
