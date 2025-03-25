@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NZRegionWalksAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8f61e55a79f8e5696ac33307d91bb9bbc3c2e8ec")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bc7a22a6d24810a93115d1b38768297ed4f4a8dc")]
 [assembly: System.Reflection.AssemblyProductAttribute("NZRegionWalksAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NZRegionWalksAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
