@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NZRegionWalksAPI.Models.Domain;
 using NZRegionWalksAPI.Models.DTOs;
 using NZRegionWalksAPI.Repositories;
@@ -20,6 +21,7 @@ namespace NZRegionWalksAPI.Controllers
         // POST : api/Images/UploadImage
         [HttpPost]
         [Route("UploadImage")]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> UploadImage([FromForm] ImageUploadRequestDTO requestDTO)
         {
             ValidateFileUpload(requestDTO);
