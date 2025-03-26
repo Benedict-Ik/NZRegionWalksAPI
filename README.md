@@ -3,10 +3,11 @@ Here is what we did in this branch:
 - This branch focuses of the creation of the `ImageRepository` class.
 - Recall that repositories only deal with domain models. The part we don't want presented to the client (abstraction).
 - We first defined an interface called `IImageRepository` with an `Upload()` method to be implemented by the repository.
-- In the repository, we present a DTO to the client as the parameter which is then manually mapped to our domain model to enable us store the infirmation in our database.
+- In the repository, we present a DTO to the client as the parameter which is then manually mapped to our domain model to enable us store the information in our database.
 - Next, we created a local folder in our solution called `Images` which will be where we will store uploaded images.
 - After saving the file locally, we want to save the changes to the database, alongside the actual file path of the file.
-- To do this, we injected the `IHttpContextAccessor` accessor, which basically provides us with the scheme and the URL to our running application. Before that, we injected the `HttpContextAccessor` in our Program.cs:
+- To do this, we injected the `IHttpContextAccessor` accessor, which basically provides us with the scheme and the URL to our running application. 
+- Before that, we injected the `HttpContextAccessor` in our Program.cs:
 
 ```csharp
 builder.Services.AddHttpContextAccessor();
@@ -17,7 +18,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
 ```
 
-- After implementing the above repository class, you can then go ahead to inject the `IImageRepository` into your Controller class .
+- After implementing the above repository class, you can then go ahead to inject the `IImageRepository` into your Controller class.
 
 Explaining the ImageRepository.cs class
 --
