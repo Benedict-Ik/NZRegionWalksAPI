@@ -19,7 +19,9 @@ namespace NZRegionWalksAPI
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services.AddHttpContextAccessor();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
             builder.Services.AddEndpointsApiExplorer();
 
             /*Enabling Authentication Feature in Swagger*/
@@ -73,6 +75,7 @@ namespace NZRegionWalksAPI
             //builder.Services.AddScoped<IRegionRepository, InMemoryRepository>();
 
             builder.Services.AddScoped<ITokenRepository, TokenRepository>();
+            builder.Services.AddScoped<IImageRepository, ImageRepository>();
 
             // Registering AutoMapper
             builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
