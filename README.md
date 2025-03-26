@@ -1,6 +1,6 @@
 Here is what we did in this branch:  
 
-- This branch focuses of the creation of the `ImageRepository`
+- This branch focuses of the creation of the `ImageRepository` class.
 - Recall that repositories only deal with domain models. The part we don't want presented to the client (abstraction).
 - We first defined an interface called `IImageRepository` with an `Upload()` method to be implemented by the repository.
 - In the repository, we present a DTO to the client as the parameter which is then manually mapped to our domain model to enable us store the infirmation in our database.
