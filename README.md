@@ -13,7 +13,7 @@ Here is what we did in this branch:
 
 ![File](file.png)
 
-- Now, since we arealy have git tracking the `API` project, we can as well create a remote repository by following the steps below:
+- Now, since we arealy have git tracking the `API` project, we can as well create a remote repository to do same for the `MVC` project by following the steps below:
     - Create a new repository on Github called `NZRegionWalksMVC`.
     - Copy the URL of the repository.
     - Open the terminal and navigate to the root directory of the project.
