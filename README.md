@@ -13,4 +13,9 @@ Here is what we did in this branch:
 
 ![File](file.png)
 
-- The above steps isn't a right fit for us because we are `git tracking` and documenting on `Github`. In order to ensure a proper flow between both projects (in our case), we would create a new separate Solution and Project called `NZRegionWalksMVC`.
+- Now, since we arealy have git tracking the `API` project, we can as well create a remote repository by following the steps below:
+    - Create a new repository on Github called `NZRegionWalksMVC`.
+    - Copy the URL of the repository.
+    - Open the terminal and navigate to the root directory of the project.
+    - Run the command `git remote add origin <URL>` to add the remote repository.
+    - Run the command `git push -u origin master` to push the project to the remote repository.
