@@ -7,11 +7,12 @@ Here is what we did in this branch:
     - Click on Properties
     - Select the `Configure Startup Projects`
     - Select both the *MVC* and *API* projects' Action as `Start`
+    - Select both the *MVC* and *API* projects' `Debug Target` as `Https`
     - Click on `Apply`.
 - Ensure the `Solution Configuration` dropdown is on `Debug`.
 - The above steps will ensure both projects are opened in different browsers (web pages) when you run the app.
 
-![File](file.png)
+![File](File.png)
 
 - Now, since we arealy have git tracking the `API` project, we can as well create a remote repository to do same for the `MVC` project by following the steps below:
     - Create a new repository on Github called `NZRegionWalksMVC`.

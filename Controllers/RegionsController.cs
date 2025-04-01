@@ -27,7 +27,7 @@ namespace NZRegionWalksAPI.Controllers
         /* GET ALL REGIONS */
         // GET: {baseUrl}/api/regions
         [HttpGet]
-        [Authorize(Roles = "Reader")]
+        //[Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetAllRegions()
         {
             // Get Data from Database - Domain Model 
